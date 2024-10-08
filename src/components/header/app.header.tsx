@@ -18,6 +18,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -59,6 +61,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+  const router = useRouter()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -82,7 +85,9 @@ export default function AppHeader() {
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
+  const handClickLogo = (event: React.MouseEvent<HTMLElement>) =>{
+    router.push('/')
+  }
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -92,11 +97,20 @@ export default function AppHeader() {
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       id={menuId}
       keepMounted
-      
+
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem >
+      <Link href={`/profile`}
+        style={{
+          color:'unset',
+          textDecoration:'unset'
+        }}
+      >
+        Profile
+      </Link>
+      </MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
@@ -167,7 +181,11 @@ export default function AppHeader() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+            sx={{ 
+              display: { xs: 'none', sm: 'block' }, 
+            cursor:'pointer'
+            }}
+            onClick={handClickLogo}
           >
             MUSIC SC
           </Typography>
@@ -184,11 +202,15 @@ export default function AppHeader() {
           <Box sx={{ display: { xs: 'none', md: 'flex' },
             alignItems:'center',
             gap:'15px',
-            cursor:'poiter'
+            cursor:'poiter',
+            "> a":{
+              color:'unset',
+              textDecoration:'unset'
+            }
         }}>
-            <span>Playlist</span>
-            <span>Like</span>
-            <span>Upload</span>
+          <Link href={`/playlists`}>Playlists</Link>
+          <Link href={`/like`}>Like</Link>
+          <span>Upload</span> 
             <Avatar 
             onClick={handleProfileMenuOpen}
             sx={{ width: 32, height: 32 }}>ĐC

@@ -16,7 +16,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-
+import AppHeader from '@/components/header/app.header'
 import ThemeRegistry from '@/components/theme-registry/theme.registry';
 
 
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <ThemeRegistry>
-         
+            <AppHeader></AppHeader>
             {children}
      
         </ThemeRegistry>
