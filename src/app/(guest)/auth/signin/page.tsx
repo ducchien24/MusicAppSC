@@ -8,7 +8,7 @@ const SignInPage = async () => {
     if (session) {
         // redirect to homepage
         redirect("/")
-    } console.log('a')
+    } 
     return (
         <AuthSignIn />
     )

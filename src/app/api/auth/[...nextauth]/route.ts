@@ -1,17 +1,18 @@
 import NextAuth from "next-auth"
-import GithubProvider from "next-auth/providers/github"
+import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import { AuthOptions } from 'next-auth';
 import { sendRequest } from "../../../../utils/api";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: AuthOptions = {
-    secret: process.env.NO_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
     // Configure one or more authentication providers
     providers: [
         CredentialsProvider({
             // The name to display on the sign in form (e.g. "Sign in with...")
-            name: "Hỏi Dân IT",
+            name: "ChinMussic",
             // `credentials` is used to generate a form on the sign in page.
             // You can specify which fields should be submitted, by adding keys to the `credentials` object.
             // e.g. domain, username, password, 2FA token, etc.
@@ -23,7 +24,7 @@ export const authOptions: AuthOptions = {
             async authorize(credentials, req) {
                 // Add logic here to look up the user from the credentials supplied
                 const res = await sendRequest<IBackendRes<JWT>>({
-                    url: "http://localhost:8000/api/v1/auth/login",
+                    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
                     method: "POST",
                     body: {
                         username: credentials?.username,
@@ -47,12 +48,16 @@ export const authOptions: AuthOptions = {
             clientId: process.env.GITHUB_ID!,
             clientSecret: process.env.GITHUB_SECRET!,
         }),
+        // GoogleProvider({
+        //     clientId: process.env.GOOGLE_ID!,
+        //     clientSecret: process.env.GOOGLE_SECRET!,
+        // }),
     ],
     callbacks: {
         async jwt({ token, user, account, profile, trigger }) {
             if (trigger === "signIn" && account?.provider !== "credentials") {
                 const res = await sendRequest<IBackendRes<JWT>>({
-                    url: "http://localhost:8000/api/v1/auth/social-media",
+                    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/social-media`,
                     method: "POST",
                     body: {
                         type: account?.provider?.toLocaleUpperCase(),
